@@ -1,6 +1,6 @@
 class Display{
 
-    constructor(displayValorAnterior, displayValorActual) {
+     constructor(displayValorAnterior, displayValorActual) {
         this.displayValorActual = displayValorActual;
         this.displayValorAnterior = displayValorAnterior;
         this.calculador = new Calculadora();
@@ -11,48 +11,46 @@ class Display{
             sumar: '+',
             dividir: '%',
             multiplicar: 'x',
-            restar: '-',
+            restar: '-', 
         }
-
-    }        
-    computar(tipo){
-        this.tipoOperacion !== 'igual' && this.calculate();
-        this.tipoOperacion = tipo
-        this.valorAnterior = this.valorActual || this.valorAnterior
-        this.valorActual = " ";
-        this.printVal()
     }
 
-    delete(){
-        this.valorActual = this.valorActual.toString().slice(0,-1)
-        this.printVal()
+    borrar() {
+        this.valorActual = this.valorActual.toString().slice(0,-1);
+        this.imprimirValores();
     }
 
-    deleteAll(){
-        this.valorActual = " "
-        this.valorAnterior = " " 
-        this.tipoOperacion = undefined
-        this.printVal()
+    borrarTodo() {
+        this.valorActual = '';
+        this.valorAnterior = '';
+        this.tipoOperacion = undefined;
+        this.imprimirValores();
     }
 
-    calculate(){
-        const valorAnterior = parseFloat(this.valorAnterior)
-        const valorActual = parseFloat(this.valorActual)
-
-        if(isNan(valorActual) || isNan(valorAnterior)) return
-        this.valorActual = this.calculadora[this.tipoOperacion](valorAnterior, valorActual)
-
+    computar(tipo) {
+        this.tipoOperacion !== 'igual' && this.calcular();
+        this.tipoOperacion = tipo;
+        this.valorAnterior = this.valorActual || this.valorAnterior;
+        this.valorActual = '';
+        this.imprimirValores();
     }
 
-    agregarNumero(parametro) {
-        if(parametro === '.' && this.valorActual.includes('.')) return 
-        this.valorActual = this.valorActual.toString() + parametro.toString();
-        this.printVal()
+    agregarNumero(numero) {
+        if(numero === '.' && this.valorActual.includes('.')) return
+        this.valorActual = this.valorActual.toString() + numero.toString();
+        this.imprimirValores();
     }
 
-    printVal() {
-        this.displayValorActual.textContent = this.valorActual 
-        //this.displayValorAnterior.textContent = `${this.valorAnterior} ${this.signos[this.tipoOperacion] || 'pasa'}`
+    imprimirValores() {
+        this.displayValorActual.textContent = this.valorActual;
+        this.displayValorAnterior.textContent = `${this.valorAnterior} ${this.signos[this.tipoOperacion] || ''}`;
     }
 
+    calcular() {
+        const valorAnterior = parseFloat(this.valorAnterior);
+        const valorActual = parseFloat(this.valorActual);
+
+        if( isNaN(valorActual)  || isNaN(valorAnterior) ) return
+        this.valorActual = this.calculador[this.tipoOperacion](valorAnterior, valorActual);
+    }
 }
